@@ -1,4 +1,4 @@
-/*1.	Display StudentName, StudentAddress, BorrowTransactionID, BorrowTransactionDate, and number of books borrowed (obtained from the total number of books borrowed) for every borrow transaction happened in 2020 by student whose address ends with ‘ Street’.*/
+/*1.	Display StudentName, StudentAddress, BorrowTransactionID, BorrowTransactionDate, and number of books borrowed (obtained from the total number of books borrowed) for every borrow transaction happened in 2020 by student whose address ends with â€˜ Streetâ€™.*/
 
 SELECT StudentName, StudentAddress, BorrowID, BorrowDate, ReturnDate
 FROM MsStudent, BorrowTransaction
@@ -6,7 +6,7 @@ WHERE YEAR(BorrowDate) = 2020 AND
 StudentAddress LIKE '%Street';
 
 --2. Display BookTitle, Publish Month (obtained from the month of the book publish date), BookCategoryName, and 
---Total Sum Donation (obtained from the total donation quantity) for each book whose category name contains ‘y’ and 
+--Total Sum Donation (obtained from the total donation quantity) for each book whose category name contains â€˜yâ€™ and 
 --published in an odd month. 
 
 SELECT 
@@ -26,10 +26,10 @@ GROUP BY mb.BookTitle, mb.PublishDate, mbc.CategoryName;
 
 
 
---3. Display BorrowTransactionID, Borrow Transaction Date (obtained from BorrowTransactionDate with ‘dd mon yyyy’ format), 
+--3. Display BorrowTransactionID, Borrow Transaction Date (obtained from BorrowTransactionDate with â€˜dd mon yyyyâ€™ format), 
 --StudentName, Books Borrowed (obtained from the total number of borrowed books), and 
 --Average Book Rating (obtained from the average rating of borrowed books) for every borrow transaction 
---whose student has ‘gmail’ domain email and Average Book Rating more than 4.0. 
+--whose student has â€˜gmailâ€™ domain email and Average Book Rating more than 4.0. 
 
 SELECT 
 bt.BorrowID AS [BorrowTransactionID], 
@@ -50,13 +50,13 @@ MsBook AS ms
   ms.BookRating > 4.0
   GROUP BY bt.BorrowID, bt.BorrowDate, mstud.StudentName;
 
-  /*4.	Display DonatorName (obtained from DonatorName and started with ‘Ms.’), DonationDate (obtained from DonationDate with ‘Mon dd, yyyy’ format), Books Donated (obtained from the number of donated books), and Average Rating (obtained from the average rating of the donated books) for each donation happened in the first two weeks (inclusively between the 1st and the 14th day) from a female donator. */
+  /*4.	Display DonatorName (obtained from DonatorName and started with â€˜Ms.â€™), DonationDate (obtained from DonationDate with â€˜Mon dd, yyyyâ€™ format), Books Donated (obtained from the number of donated books), and Average Rating (obtained from the average rating of the donated books) for each donation happened in the first two weeks (inclusively between the 1st and the 14th day) from a female donator. */
 
 select concat('Ms.',DonatorName) as DonatorName,convert(varchar,DonationDate,107) as DonationDate, qty as BookDonated
 from DonationTransaction dt JOIN MsDonator md on dt.DonatorID=md.DonatorID join DonationDetails dts on dt.DonationID=dts.DonationID
 where  DonatorGender like 'Female' and day(DonationDate) between 1 and 14 
 
-/*5.	Display DonatorName, DonationDate, StaffName, StaffGender, and StaffSalary (obtained from StaffSalary and started with ‘Rp.’) for every donation completed by staff whose salary is more than the average staff salary and its donator name consists of minimum two words. Sort the result by DonationDate in descending order.
+/*5.	Display DonatorName, DonationDate, StaffName, StaffGender, and StaffSalary (obtained from StaffSalary and started with â€˜Rp.â€™) for every donation completed by staff whose salary is more than the average staff salary and its donator name consists of minimum two words. Sort the result by DonationDate in descending order.
 (alias subquery)
 */
 
@@ -67,7 +67,7 @@ where StaffSalary > (select avg(StaffSalary) from MsStaff ) and DonatorName not 
 order by DonationDate DESC
 
 
-/*6.	Display DonationID, BookTitle (obtained from removing all white spaces from BookTitle), Rating Percentage (obtained from multiplying the BookRating with 20 and added with ‘%’ at the end), Quantity, and DonatorPhone for each donation with book rating more than the average rating and DonatorAddress consists of more than 15 characters. 
+/*6.	Display DonationID, BookTitle (obtained from removing all white spaces from BookTitle), Rating Percentage (obtained from multiplying the BookRating with 20 and added with â€˜%â€™ at the end), Quantity, and DonatorPhone for each donation with book rating more than the average rating and DonatorAddress consists of more than 15 characters. 
 (alias subquery)
 */
 
@@ -81,10 +81,10 @@ from MsDonator md, DonationTransaction dt, DonationDetails dd, MsBook mb,
 where md.DonatorID = dt.DonatorID and dt.DonationID = dd.DonationID and dd.BookID = mb.BookID and mb.BookRating > avg_rate.avgBookRate and len(md.DonatorAddress) > 15;
 
 /*7.Display BorrowTransactionID, 
-Borrow Date (obtained from BorrowTransactionDate in ‘mm-dd-yyyy’ format), 
+Borrow Date (obtained from BorrowTransactionDate in â€˜mm-dd-yyyyâ€™ format), 
 Return Day (obtained from the day name of the return date), 
 BookTitle, 
-BookRating (obtained from BookRating followed by ‘ star(s)’), and 
+BookRating (obtained from BookRating followed by â€˜ star(s)â€™), and 
 BookCategoryName 
 for each borrow transaction which contains book(s) whose rating is equal to the minimum rating or the maximum rating of all available books while also have more than 10 stocks. Sort the result based on the BorrowTransactionID in descending order.
 (alias subquery)
@@ -110,13 +110,13 @@ ORDER BY BT.BorrowID DESC;
 
 
 
-/*8.Display StudentName (obtained from StudentName added with ‘Mr. ’ at the beginning), 
-StudentEmail (obtained by removing ‘.com’ from StudentEmail), 
+/*8.Display StudentName (obtained from StudentName added with â€˜Mr. â€™ at the beginning), 
+StudentEmail (obtained by removing â€˜.comâ€™ from StudentEmail), 
 Books Borrowed (obtained from the total number of books borrowed) 
 for each borrow transaction done by male student and served by staff whose salary is more than the average staff salary. 
 Then, combine it with 
-StudentName (obtained from StudentName added with ‘Ms. ’ at the beginning), 
-StudentEmail (obtained by removing ‘.com’ from StudentEmail), 
+StudentName (obtained from StudentName added with â€˜Ms. â€™ at the beginning), 
+StudentEmail (obtained by removing â€˜.comâ€™ from StudentEmail), 
 Books Borrowed (obtained from the total number of books borrowed) 
 for each borrow transaction done by female student and served by staff whose salary is less than the average staff salary.
 (alias subquery)
@@ -137,11 +137,11 @@ WHERE StaffSalary > SalaryMore.AveragePrice
 GROUP BY StudentGender,StudentName,StudentEmail,BT.StudentID
 
 
-/*9.Create a view named ‘ViewDonationDetail’ to display 
+/*9.Create a view named â€˜ViewDonationDetailâ€™ to display 
 DonatorName, 
 Donation Transaction (obtained from the number of donation transaction), 
 Average Quantity (obtained from the average donation quantity) 
-for each donation done by donator whose address ended with ‘ Street’ or ‘ Avenue’ and Donation Transaction more than 1.*/
+for each donation done by donator whose address ended with â€˜ Streetâ€™ or â€˜ Avenueâ€™ and Donation Transaction more than 1.*/
 
 CREATE VIEW ViewDonationDetail
 AS SELECT MD.DonatorName,
@@ -157,7 +157,7 @@ HAVING (DonatorAddress LIKE '% Street' OR DonatorAddress LIKE '% Avenue') AND Co
 
 SELECT * FROM ViewDonationDetail
 
-/*10.	Create a view named ‘ViewStudentBorrowingData’ to display StudentName, Borrow Transaction (obtained from the total number of transaction), and Average Duration (obtained from the average different days between the borrow date and return date) for each borrow transaction done by male student whose email contains ‘yahoo’
+/*10.	Create a view named â€˜ViewStudentBorrowingDataâ€™ to display StudentName, Borrow Transaction (obtained from the total number of transaction), and Average Duration (obtained from the average different days between the borrow date and return date) for each borrow transaction done by male student whose email contains â€˜yahooâ€™
 */
 
 SELECT * FROM MsStudent
